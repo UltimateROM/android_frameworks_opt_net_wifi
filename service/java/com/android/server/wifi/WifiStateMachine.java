@@ -214,6 +214,8 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
     private final boolean mBackgroundScanSupported;
 
     private final String mInterfaceName;
+    /* The interface for dhcp to act on */
+    private final String mDataInterfaceName;
     /* Tethering interface could be separate from wlan interface */
     private String mTetherInterfaceName;
 
@@ -1065,6 +1067,13 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         mSetCountryCode = Settings.Global.getString(
                 mContext.getContentResolver(), Settings.Global.WIFI_COUNTRY_CODE);
         mInterfaceName = wlanInterface;
+        if (SystemProperties.getInt("persist.fst.rate.upgrade.en", 0) == 1) {
+            log("fst enabled");
+            mDataInterfaceName = "bond0";
+        } else {
+            mDataInterfaceName = wlanInterface;
+        }
+
         mNetworkInfo = new NetworkInfo(ConnectivityManager.TYPE_WIFI, 0, NETWORKTYPE, "");
         mBatteryStats = IBatteryStats.Stub.asInterface(ServiceManager.getService(
                 BatteryStats.SERVICE_NAME));
@@ -1097,7 +1106,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         mLastNetworkId = WifiConfiguration.INVALID_NETWORK_ID;
         mLastSignalLevel = -1;
 
-        mNetlinkTracker = new NetlinkTracker(mInterfaceName, new NetlinkTracker.Callback() {
+        mNetlinkTracker = new NetlinkTracker(mDataInterfaceName, new NetlinkTracker.Callback() {
             public void update() {
                 sendMessage(CMD_UPDATE_LINKPROPERTIES);
             }
@@ -1766,8 +1775,8 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
             }
         }
         if (stats == null || mWifiLinkLayerStatsSupported <= 0) {
-            long mTxPkts = TrafficStats.getTxPackets(mInterfaceName);
-            long mRxPkts = TrafficStats.getRxPackets(mInterfaceName);
+            long mTxPkts = TrafficStats.getTxPackets(mDataInterfaceName);
+            long mRxPkts = TrafficStats.getRxPackets(mDataInterfaceName);
             mWifiInfo.updatePacketRates(mTxPkts, mRxPkts);
         } else {
             mWifiInfo.updatePacketRates(stats);
@@ -4557,7 +4566,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         LinkProperties newLp = new LinkProperties();
 
         // Interface name, proxy, and TCP buffer sizes are locally configured.
-        newLp.setInterfaceName(mInterfaceName);
+        newLp.setInterfaceName(mDataInterfaceName);
         newLp.setHttpProxy(mWifiConfigStore.getProxyProperties(mLastNetworkId));
         if (!TextUtils.isEmpty(mTcpBufferSizes)) {
             newLp.setTcpBufferSizes(mTcpBufferSizes);
@@ -4582,7 +4591,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
             // Even when we're using static configuration, we don't need to look at the config
             // store, because static IP configuration also populates mDhcpResults.
             if ((mDhcpResults != null)) {
-                for (RouteInfo route : mDhcpResults.getRoutes(mInterfaceName)) {
+                for (RouteInfo route : mDhcpResults.getRoutes(mDataInterfaceName)) {
                     newLp.addRoute(route);
                 }
                 for (InetAddress dns : mDhcpResults.dnsServers) {
@@ -4706,7 +4715,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     // for now it's only here for extra redundancy. However, it will increase
                     // robustness if we move to getting IPv4 routes from netlink as well.
                     loge("DHCP failure: provisioned, clearing IPv4 address.");
-                    if (!clearIPv4Address(mInterfaceName)) {
+                    if (!clearIPv4Address(mDataInterfaceName)) {
                         sendMessage(CMD_IP_CONFIGURATION_LOST);
                     }
                 }
@@ -4997,8 +5006,8 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         stopDhcp();
 
         try {
-            mNwService.clearInterfaceAddresses(mInterfaceName);
-            mNwService.disableIpv6(mInterfaceName);
+            mNwService.clearInterfaceAddresses(mDataInterfaceName);
+            mNwService.disableIpv6(mDataInterfaceName);
         } catch (Exception e) {
             loge("Failed to clear addresses or disable ipv6" + e);
         }
@@ -5087,10 +5096,10 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
         if (mDhcpStateMachine == null) {
             if (useLegacyDhcpClient()) {
                 mDhcpStateMachine = DhcpStateMachine.makeDhcpStateMachine(
-                        mContext, WifiStateMachine.this, mInterfaceName);
+                        mContext, WifiStateMachine.this, mDataInterfaceName);
             } else {
                 mDhcpStateMachine = DhcpClient.makeDhcpStateMachine(
-                        mContext, WifiStateMachine.this, mInterfaceName);
+                        mContext, WifiStateMachine.this, mDataInterfaceName);
             }
         }
     }
@@ -5786,16 +5795,16 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                             // Ensure interface is down and we have no IP
                             // addresses before a supplicant start.
                             mNwService.setInterfaceDown(mInterfaceName);
-                            mNwService.clearInterfaceAddresses(mInterfaceName);
+                            mNwService.clearInterfaceAddresses(mDataInterfaceName);
 
                             // Set privacy extensions
-                            mNwService.setInterfaceIpv6PrivacyExtensions(mInterfaceName, true);
+                            mNwService.setInterfaceIpv6PrivacyExtensions(mDataInterfaceName, true);
 
                             // IPv6 is enabled only as long as access point is connected since:
                             // - IPv6 addresses and routes stick around after disconnection
                             // - kernel is unaware when connected and fails to start IPv6 negotiation
                             // - kernel can start autoconfiguration when 802.1x is not complete
-                            mNwService.disableIpv6(mInterfaceName);
+                            mNwService.disableIpv6(mDataInterfaceName);
                         } catch (RemoteException re) {
                             loge("Unable to change interface settings: " + re);
                         } catch (IllegalStateException ie) {
@@ -8113,7 +8122,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
 
             try {
                 mIpReachabilityMonitor = new IpReachabilityMonitor(
-                        mInterfaceName,
+                        mDataInterfaceName,
                         new IpReachabilityMonitor.Callback() {
                             @Override
                             public void notifyLost(InetAddress ip, String logMsg) {
@@ -8496,7 +8505,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
             clearCurrentConfigBSSID("ObtainingIpAddress");
 
             try {
-                mNwService.enableIpv6(mInterfaceName);
+                mNwService.enableIpv6(mDataInterfaceName);
             } catch (RemoteException re) {
                 loge("Failed to enable IPv6: " + re);
             } catch (IllegalStateException e) {
@@ -8510,7 +8519,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     // Remove any IP address on the interface in case we're switching from static
                     // IP configuration to DHCP. This is safe because if we get here when not
                     // roaming, we don't have a usable address.
-                    clearIPv4Address(mInterfaceName);
+                    clearIPv4Address(mDataInterfaceName);
                     startDhcp();
                 }
                 obtainingIpWatchdogCount++;
@@ -8532,7 +8541,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     ifcg.setLinkAddress(config.ipAddress);
                     ifcg.setInterfaceUp();
                     try {
-                        mNwService.setInterfaceConfig(mInterfaceName, ifcg);
+                        mNwService.setInterfaceConfig(mDataInterfaceName, ifcg);
                         if (DBG) log("Static IP configuration succeeded");
                         DhcpResults dhcpResults = new DhcpResults(config);
                         sendMessage(CMD_STATIC_IP_SUCCESS, dhcpResults);
