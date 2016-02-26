@@ -7606,6 +7606,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     if (config == null) {
                         loge("No network with id = " + netId);
                         messageHandlingStatus = MESSAGE_HANDLING_STATUS_FAIL;
+                        replyToMessage(message, message.what, FAILURE);
                         break;
                     }
 
