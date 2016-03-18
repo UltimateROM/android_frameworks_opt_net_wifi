@@ -2704,35 +2704,6 @@ public class WifiConfigStore extends IpConfigStore {
                 }
             }
 
-            if (!((newNetwork == false) && (savedConfig != null) &&
-                   (savedConfig.SIMNum == config.SIMNum)) && (config.SIMNum != 0)){
-                if (!mWifiNative.setNetworkVariable(
-                            netId,
-                            WifiConfiguration.SIMNumVarName,
-                            Integer.toString(config.SIMNum))) {
-                    loge(config.SIMNum + ": failed to set sim no: "
-                             +config.SIMNum);
-                    break setVariables;
-                }
-            }
-
-            if (config.isIBSS) {
-                if(!mWifiNative.setNetworkVariable(
-                        netId,
-                        WifiConfiguration.modeVarName,
-                        "1")) {
-                    loge("failed to set adhoc mode");
-                    break setVariables;
-                }
-                if(!mWifiNative.setNetworkVariable(
-                        netId,
-                        WifiConfiguration.frequencyVarName,
-                        Integer.toString(config.frequency))) {
-                    loge("failed to set frequency");
-                    break setVariables;
-                }
-            }
-
             String allowedKeyManagementString =
                 makeString(config.allowedKeyManagement, WifiConfiguration.KeyMgmt.strings);
             if (!((newNetwork == false) && (savedConfig != null) &&
@@ -3813,15 +3784,6 @@ public class WifiConfigStore extends IpConfigStore {
             try {
                 config.priority = Integer.parseInt(value);
             } catch (NumberFormatException ignore) {
-            }
-        }
-
-        value = mWifiNative.getNetworkVariable(netId, WifiConfiguration.SIMNumVarName);
-        if (!TextUtils.isEmpty(value)) {
-            try {
-                config.SIMNum = Integer.parseInt(value);
-            } catch (NumberFormatException ignore) {
-                Log.e(TAG,"error in parsing Selected Sim number " + config.SIMNum);
             }
         }
 
