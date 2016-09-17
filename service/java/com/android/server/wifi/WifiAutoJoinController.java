@@ -57,12 +57,12 @@ public class WifiAutoJoinController {
     private WifiNetworkScoreCache mNetworkScoreCache;
 
     private static final String TAG = "WifiAutoJoinController ";
-    private static boolean DBG = false;
-    private static boolean VDBG = false;
+    private static boolean DBG = true;
+    private static boolean VDBG = true;
     private static final boolean mStaStaSupported = false;
 
-    public static int mScanResultMaximumAge = 40000; /* milliseconds unit */
-    public static int mScanResultAutoJoinAge = 5000; /* milliseconds unit */
+    public static int mScanResultMaximumAge = 2147483647; /* milliseconds unit */
+    public static int mScanResultAutoJoinAge =2147483647; /* milliseconds unit */
 
     private String mCurrentConfigurationKey = null; //used by autojoin
 
