@@ -9911,7 +9911,10 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiPno
                     }
                     break;
                 case CMD_SCREEN_STATE_CHANGED:
-                    handleScreenStateChanged(message.arg1 != 0);
+                    WifiManager manager = (WifiManager)mContext.getSystemService(Context.WIFI_SERVICE);
+                    if(manager.isWifiEnabled()) {
+                        handleScreenStateChanged(message.arg1 != 0);
+                    }
                     break;
                 case WifiMonitor.RSN_PMKID_MISMATCH_EVENT:
                     //WAR: In release M, there is a TLS bugs for some radius. M upgrade the TLS to
