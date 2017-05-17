@@ -105,10 +105,10 @@ public class WifiQualifiedNetworkSelector {
     public static final int PASSPOINT_SECURITY_AWARD = 40;
     public static final int SECURITY_AWARD = 80;
     public static final int BSSID_BLACKLIST_THRESHOLD = 3;
-    public static final int BSSID_BLACKLIST_EXPIRE_TIME = 5 * 60 * 1000;
+    public static final int BSSID_BLACKLIST_EXPIRE_TIME = 5000;
     private final int mNoIntnetPenalty;
     //TODO: check whether we still need this one when we update the scan manager
-    public static final int SCAN_RESULT_MAXIMUNM_AGE = 40000;
+    public static final int SCAN_RESULT_MAXIMUNM_AGE = 4000;
     private static final int INVALID_TIME_STAMP = -1;
     private long mLastQualifiedNetworkSelectionTimeStamp = INVALID_TIME_STAMP;
 
@@ -387,7 +387,7 @@ public class WifiQualifiedNetworkSelector {
                 if (gap < MINIMUM_QUALIFIED_NETWORK_SELECTION_INTERVAL) {
                     localLog("Too short to last successful Qualified Network Selection Gap is:"
                             + gap + " ms!");
-                    return false;
+                    //return false;
                 }
             }
 

@@ -1025,7 +1025,7 @@ public class SupplicantWifiScannerImpl extends WifiScannerImpl implements Handle
      */
     public static class HwPnoDebouncer {
         public static final String PNO_DEBOUNCER_ALARM_TAG = TAG + "Pno Monitor";
-        private static final int MINIMUM_PNO_GAP_MS = 5 * 1000;
+        private static final int MINIMUM_PNO_GAP_MS = 5 * 1000 * 1000;
 
         private final WifiNative mWifiNative;
         private final AlarmManager mAlarmManager;

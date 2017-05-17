@@ -5461,6 +5461,14 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
                     mWifiLastResortWatchdog.noteConnectionFailureAndTriggerIfNeeded(getTargetSsid(),
                             bssid,
                             WifiLastResortWatchdog.FAILURE_CODE_ASSOCIATION);
+
+                    if (didBlackListBSSID) {
+                          Log.e(TAG, "chrono: " + bssid + " got blacklisted, will try to reconnect...");
+                          mWifiConfigManager.clearBssidBlacklist();
+			  mWifiConfigManager.removeSavedNetworks();
+                          // Disconnect and let autojoin reselect a new networok
+                          sendMessage(CMD_DISCONNECT);
+                    }
                     break;
                 case WifiMonitor.AUTHENTICATION_FAILURE_EVENT:
                     mWifiLogger.captureBugReportData(WifiLogger.REPORT_REASON_AUTH_FAILURE);

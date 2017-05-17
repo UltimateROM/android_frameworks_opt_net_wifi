@@ -472,6 +472,12 @@ public class WifiConfigManager {
         return networks;
     }
 
+    public void removeSavedNetworks() {
+        for (WifiConfiguration config : mConfiguredNetworks.valuesForCurrentUser()) {
+		this.forgetNetwork(config.networkId);
+        }
+    }
+
     /**
      * This function returns all configuration, and is used for debug and creating bug reports.
      */
@@ -909,9 +915,9 @@ public class WifiConfigManager {
      * @return {@code true} if it succeeds, {@code false} otherwise
      */
     boolean forgetNetwork(int netId) {
-        if (mShowNetworks) localLogNetwork("forgetNetwork", netId);
+        Log.i(TAG, "forgetNetwork " + netId);
         if (!removeNetwork(netId)) {
-            loge("Failed to forget network " + netId);
+            Log.e(TAG, "Failed to forget network " + netId);
             return false;
         }
         saveConfig();
