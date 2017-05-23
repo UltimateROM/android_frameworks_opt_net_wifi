@@ -79,7 +79,7 @@ public class WifiConnectivityManagerTest {
                 mWifiScanner, mWifiConfigManager, mWifiInfo, mWifiQNS, mWifiInjector,
                 mLooper.getLooper(), true);
         mWifiConnectivityManager.setWifiEnabled(true);
-        when(mClock.elapsedRealtime()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.elapsedRealtime()).thenReturn(SystemClock.elapsedRealtime1());
     }
 
     /**

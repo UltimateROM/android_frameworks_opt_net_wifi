@@ -2418,7 +2418,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
     String printTime() {
         StringBuilder sb = new StringBuilder();
         sb.append(" rt=").append(SystemClock.uptimeMillis());
-        sb.append("/").append(SystemClock.elapsedRealtime());
+        sb.append("/").append(SystemClock.elapsedRealtime1());
         return sb.toString();
     }
 
@@ -5675,7 +5675,7 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
                     replyToMessage(message, message.what, ok ? SUCCESS : FAILURE);
                     break;
                 case CMD_ENABLE_ALL_NETWORKS:
-                    long time = android.os.SystemClock.elapsedRealtime();
+                    long time = android.os.SystemClock.elapsedRealtime1();
                     if (time - mLastEnableAllNetworksTime > MIN_INTERVAL_ENABLE_ALL_NETWORKS_MS) {
                         mWifiConfigManager.enableAllNetworks();
                         mLastEnableAllNetworksTime = time;

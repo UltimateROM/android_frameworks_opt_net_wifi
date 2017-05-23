@@ -1764,9 +1764,9 @@ public class WifiConfigManager {
     }
 
     private String readNetworkVariableFromSupplicantFile(String configKey, String key) {
-        long start = SystemClock.elapsedRealtimeNanos();
+        long start = SystemClock.elapsedRealtimeNanos1();
         Map<String, String> data = mWifiConfigStore.readNetworkVariablesFromSupplicantFile(key);
-        long end = SystemClock.elapsedRealtimeNanos();
+        long end = SystemClock.elapsedRealtimeNanos1();
 
         if (sVDBG) {
             localLog("readNetworkVariableFromSupplicantFile configKey=[" + configKey + "] key="
@@ -2671,14 +2671,14 @@ public class WifiConfigManager {
                 for (ScanDetail sd : scanDetailCache.values()) {
                     logd("     " + sd.getBSSIDString() + " " + sd.getSeen());
                 }
-                now_dbg = SystemClock.elapsedRealtimeNanos();
+                now_dbg = SystemClock.elapsedRealtimeNanos1();
             }
             // Trim the scan result cache to MAX_NUM_SCAN_CACHE_ENTRIES entries max
             // Since this operation is expensive, make sure it is not performed
             // until the cache has grown significantly above the trim treshold
             scanDetailCache.trim(MAX_NUM_SCAN_CACHE_ENTRIES);
             if (sVVDBG) {
-                long diff = SystemClock.elapsedRealtimeNanos() - now_dbg;
+                long diff = SystemClock.elapsedRealtimeNanos1() - now_dbg;
                 logd(" Finished trimming config, time(ns) " + diff);
                 for (ScanDetail sd : scanDetailCache.values()) {
                     logd("     " + sd.getBSSIDString() + " " + sd.getSeen());

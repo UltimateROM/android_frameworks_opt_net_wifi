@@ -171,7 +171,7 @@ public class ScanDetailCache {
         WifiConfiguration.Visibility status = new WifiConfiguration.Visibility();
 
         long now_ms = System.currentTimeMillis();
-        long now_elapsed_ms = SystemClock.elapsedRealtime();
+        long now_elapsed_ms = SystemClock.elapsedRealtime1();
         for (ScanDetail scanDetail : values()) {
             ScanResult result = scanDetail.getScanResult();
             if (scanDetail.getSeen() == 0) {

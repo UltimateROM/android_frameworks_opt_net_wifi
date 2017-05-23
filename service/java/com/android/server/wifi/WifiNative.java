@@ -478,7 +478,7 @@ public class WifiNative {
 
 
     private void logDbg(String debug) {
-        long now = SystemClock.elapsedRealtimeNanos();
+        long now = SystemClock.elapsedRealtimeNanos1();
         String ts = String.format("[%,d us] ", now/1000);
         Log.e("WifiNative: ", ts+debug+ " stack:"
                 + Thread.currentThread().getStackTrace()[2].getMethodName() +" - "
@@ -2724,7 +2724,7 @@ public class WifiNative {
          */
         private static long convertDriverTimestampUSecToWallclockMSec(long driverTimestampUSec) {
             final long wallclockMillisNow = System.currentTimeMillis();
-            final long boottimeMillisNow = SystemClock.elapsedRealtime();
+            final long boottimeMillisNow = SystemClock.elapsedRealtime1();
             final long driverTimestampMillis = driverTimestampUSec / USEC_PER_MSEC;
 
             long boottimeTimestampMillis = boottimeMillisNow % MAX_DRIVER_TIMESTAMP_MSEC;

@@ -803,7 +803,7 @@ public class WifiServiceImpl extends IWifiManager.Stub {
                 }
 
                 // Convert the LinkLayerStats into EnergyActivity
-                energyInfo = new WifiActivityEnergyInfo(SystemClock.elapsedRealtime(),
+                energyInfo = new WifiActivityEnergyInfo(SystemClock.elapsedRealtime1(),
                         WifiActivityEnergyInfo.STACK_STATE_STATE_IDLE, stats.tx_time,
                         txTimePerLevel, stats.rx_time, rxIdleTime, energyUsed);
             }
