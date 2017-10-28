@@ -4123,7 +4123,10 @@ public class WifiStateMachine extends StateMachine implements WifiNative.WifiRss
                     maybeRegisterNetworkFactory();
                     break;
                 case CMD_SCREEN_STATE_CHANGED:
-                    handleScreenStateChanged(message.arg1 != 0);
+                    WifiManager manager = (WifiManager)mContext.getSystemService(Context.WIFI_SERVICE);
+                    if(manager.isWifiEnabled()) {
+                        handleScreenStateChanged(message.arg1 != 0);
+                    }
                     break;
                     /* Discard */
                 case CMD_START_SCAN:
