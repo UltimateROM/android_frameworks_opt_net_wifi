@@ -375,7 +375,7 @@ public class WifiAwareDataPathStateManager {
 
         nnri.state = AwareNetworkRequestInformation.STATE_RESPONDER_WAIT_FOR_RESPOND_RESPONSE;
         nnri.ndpId = ndpId;
-        nnri.startTimestamp = SystemClock.elapsedRealtime();
+        nnri.startTimestamp = SystemClock.elapsedRealtime1();
         mMgr.respondToDataPathRequest(true, ndpId, nnri.interfaceName, nnri.networkSpecifier.pmk,
                 nnri.networkSpecifier.passphrase, nnri.networkSpecifier.isOutOfBand());
 
@@ -527,7 +527,7 @@ public class WifiAwareDataPathStateManager {
 
             mAwareMetrics.recordNdpStatus(NanStatusType.SUCCESS, networkSpecifier.isOutOfBand(),
                     nnri.startTimestamp);
-            nnri.startTimestamp = SystemClock.elapsedRealtime(); // update time-stamp for duration
+            nnri.startTimestamp = SystemClock.elapsedRealtime1(); // update time-stamp for duration
             mAwareMetrics.recordNdpCreation(nnri.uid, mNetworkRequestsCache);
         } else {
             if (DBG) {
@@ -751,7 +751,7 @@ public class WifiAwareDataPathStateManager {
                         nnri.networkSpecifier.passphrase, nnri.networkSpecifier.isOutOfBand());
                 nnri.state =
                         AwareNetworkRequestInformation.STATE_INITIATOR_WAIT_FOR_REQUEST_RESPONSE;
-                nnri.startTimestamp = SystemClock.elapsedRealtime();
+                nnri.startTimestamp = SystemClock.elapsedRealtime1();
             } else {
                 nnri.state = AwareNetworkRequestInformation.STATE_RESPONDER_WAIT_FOR_REQUEST;
             }

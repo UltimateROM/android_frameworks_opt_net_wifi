@@ -93,7 +93,7 @@ public class ScoredNetworkEvaluatorTest {
 
         reset(mNetworkScoreManager);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1());
     }
 
     @After

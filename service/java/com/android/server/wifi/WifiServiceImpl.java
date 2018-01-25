@@ -595,14 +595,14 @@ public class WifiServiceImpl extends IWifiManager.Stub {
         // Check and throttle background apps for wifi scan.
         if (isRequestFromBackground(packageName)) {
             long lastScanMs = mLastScanTimestamps.getOrDefault(packageName, 0L);
-            long elapsedRealtime = mClock.getElapsedSinceBootMillis();
+            long elapsedRealtime1 = mClock.getElapsedSinceBootMillis();
 
-            if (lastScanMs != 0 && (elapsedRealtime - lastScanMs) < mBackgroundThrottleInterval) {
+            if (lastScanMs != 0 && (elapsedRealtime1 - lastScanMs) < mBackgroundThrottleInterval) {
                 sendFailedScanBroadcast();
                 return;
             }
             // Proceed with the scan request and record the time.
-            mLastScanTimestamps.put(packageName, elapsedRealtime);
+            mLastScanTimestamps.put(packageName, elapsedRealtime1);
         }
         synchronized (this) {
             if (mWifiScanner == null) {

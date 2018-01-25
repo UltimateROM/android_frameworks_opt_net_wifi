@@ -86,7 +86,7 @@ public abstract class BaseWifiScannerImplTest {
                 .thenReturn(mAlarmManager.getAlarmManager());
 
         when(mContext.getResources()).thenReturn(mResources);
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1());
     }
 
     protected boolean isAllChannelsScanned(int band) {

@@ -57,7 +57,7 @@ public class SavedNetworkEvaluatorTest {
         mLocalLog = new LocalLog(512);
 
         when(mWifiConnectivityHelper.isFirmwareRoamingSupported()).thenReturn(false);
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1());
 
         mThresholdMinimumRssi2G = mResource.getInteger(
                 R.integer.config_wifi_framework_wifi_score_bad_rssi_threshold_24GHz);

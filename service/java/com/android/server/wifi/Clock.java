@@ -37,7 +37,7 @@ public class Clock {
      * @return Current time since boot in milliseconds.
      */
     public long getElapsedSinceBootMillis() {
-        return SystemClock.elapsedRealtime();
+        return SystemClock.elapsedRealtime1();
     }
 
    /**
@@ -46,7 +46,7 @@ public class Clock {
      * @return Current time since boot in nanoseconds.
      */
     public long getElapsedSinceBootNanos() {
-        return SystemClock.elapsedRealtimeNanos();
+        return SystemClock.elapsedRealtimeNanos1();
     }
 
     /**

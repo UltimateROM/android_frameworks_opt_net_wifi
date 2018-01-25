@@ -436,7 +436,7 @@ public class WifiController extends StateMachine {
         public void enter() {
             mWifiStateMachine.setSupplicantRunning(false);
             // Supplicant can't restart right away, so not the time we switched off
-            mDisabledTimestamp = SystemClock.elapsedRealtime();
+            mDisabledTimestamp = SystemClock.elapsedRealtime1();
             mDeferredEnableSerialNumber++;
             mHaveDeferredEnable = false;
             mWifiStateMachine.clearANQPCache();
@@ -502,7 +502,7 @@ public class WifiController extends StateMachine {
         }
 
         private boolean doDeferEnable(Message msg) {
-            long delaySoFar = SystemClock.elapsedRealtime() - mDisabledTimestamp;
+            long delaySoFar = SystemClock.elapsedRealtime1() - mDisabledTimestamp;
             if (delaySoFar >= mReEnableDelayMillis) {
                 return false;
             }
@@ -589,7 +589,7 @@ public class WifiController extends StateMachine {
             mWifiStateMachine.setOperationalMode(WifiStateMachine.SCAN_ONLY_WITH_WIFI_OFF_MODE);
             mWifiStateMachine.setSupplicantRunning(true);
             // Supplicant can't restart right away, so not the time we switched off
-            mDisabledTimestamp = SystemClock.elapsedRealtime();
+            mDisabledTimestamp = SystemClock.elapsedRealtime1();
             mDeferredEnableSerialNumber++;
             mHaveDeferredEnable = false;
             mWifiStateMachine.clearANQPCache();
@@ -649,7 +649,7 @@ public class WifiController extends StateMachine {
         }
 
         private boolean doDeferEnable(Message msg) {
-            long delaySoFar = SystemClock.elapsedRealtime() - mDisabledTimestamp;
+            long delaySoFar = SystemClock.elapsedRealtime1() - mDisabledTimestamp;
             if (delaySoFar >= mReEnableDelayMillis) {
                 return false;
             }

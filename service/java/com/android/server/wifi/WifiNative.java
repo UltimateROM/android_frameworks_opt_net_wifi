@@ -1409,7 +1409,7 @@ public class WifiNative {
          */
         private static long convertDriverTimestampUSecToWallclockMSec(long driverTimestampUSec) {
             final long wallclockMillisNow = System.currentTimeMillis();
-            final long boottimeMillisNow = SystemClock.elapsedRealtime();
+            final long boottimeMillisNow = SystemClock.elapsedRealtime1();
             final long driverTimestampMillis = driverTimestampUSec / USEC_PER_MSEC;
 
             long boottimeTimestampMillis = boottimeMillisNow % MAX_DRIVER_TIMESTAMP_MSEC;

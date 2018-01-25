@@ -91,7 +91,7 @@ public class WifiConnectivityManagerTest {
         mWifiConnectivityManager = createConnectivityManager();
         verify(mWifiConfigManager).setOnSavedNetworkUpdateListener(anyObject());
         mWifiConnectivityManager.setWifiEnabled(true);
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1());
         mFullScanMaxTxPacketRate = mResource.getInteger(
                 R.integer.config_wifi_framework_max_tx_rate_for_full_scan);
         mFullScanMaxRxPacketRate = mResource.getInteger(
@@ -1284,14 +1284,14 @@ public class WifiConnectivityManagerTest {
         // Arrival of scan results will trigger WifiConnectivityManager to refresh its
         // BSSID blacklist. Verify that the blacklisted BSSId is not freed because
         // its blacklist expiration time hasn't reached yet.
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiConnectivityManager.BSSID_BLACKLIST_EXPIRE_TIME_MS / 2);
         mWifiConnectivityManager.forceConnectivityScan(WIFI_WORK_SOURCE);
         assertTrue(mWifiConnectivityManager.isBssidDisabled(bssid));
 
         // Force another connectivity scan at BSSID_BLACKLIST_EXPIRE_TIME_MS from when the
         // BSSID was blacklisted. Verify that the blacklisted BSSId is freed.
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiConnectivityManager.BSSID_BLACKLIST_EXPIRE_TIME_MS);
         mWifiConnectivityManager.forceConnectivityScan(WIFI_WORK_SOURCE);
 

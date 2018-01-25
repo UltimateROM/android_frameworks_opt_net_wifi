@@ -1151,7 +1151,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
             public void enter() {
                 mTimeoutMessage = new WakeupMessage(mContext, getHandler(), HAL_COMMAND_TIMEOUT_TAG,
                         MESSAGE_TYPE_RESPONSE_TIMEOUT, mCurrentCommand.arg1, mCurrentTransactionId);
-                mTimeoutMessage.schedule(SystemClock.elapsedRealtime() + AWARE_COMMAND_TIMEOUT);
+                mTimeoutMessage.schedule(SystemClock.elapsedRealtime1() + AWARE_COMMAND_TIMEOUT);
             }
 
             @Override
@@ -1339,7 +1339,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
                                 0, 0, networkSpecifier);
                         mDataPathConfirmTimeoutMessages.put(networkSpecifier, timeout);
                         timeout.schedule(
-                                SystemClock.elapsedRealtime() + AWARE_WAIT_FOR_DP_CONFIRM_TIMEOUT);
+                                SystemClock.elapsedRealtime1() + AWARE_WAIT_FOR_DP_CONFIRM_TIMEOUT);
                     }
 
                     break;
@@ -1590,7 +1590,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
                                 0, 0, networkSpecifier);
                         mDataPathConfirmTimeoutMessages.put(networkSpecifier, timeout);
                         timeout.schedule(
-                                SystemClock.elapsedRealtime() + AWARE_WAIT_FOR_DP_CONFIRM_TIMEOUT);
+                                SystemClock.elapsedRealtime1() + AWARE_WAIT_FOR_DP_CONFIRM_TIMEOUT);
                     }
                     break;
                 }
@@ -1672,7 +1672,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
                     Message sentMessage = mCurrentCommand.getData().getParcelable(
                             MESSAGE_BUNDLE_KEY_SENT_MESSAGE);
                     sentMessage.getData().putLong(MESSAGE_BUNDLE_KEY_SEND_MESSAGE_ENQUEUE_TIME,
-                            SystemClock.elapsedRealtime());
+                            SystemClock.elapsedRealtime1());
                     mFwQueuedSendMessages.put(mCurrentTransactionId, sentMessage);
                     updateSendMessageTimeout();
                     if (!mSendQueueBlocked) {
@@ -1911,11 +1911,11 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
             }
             /*
              * Note: using 'first' to always time-out (remove) at least 1 notification (partially)
-             * due to test code needs: there's no way to mock elapsedRealtime(). TODO: replace with
+             * due to test code needs: there's no way to mock elapsedRealtime1(). TODO: replace with
              * injected getClock() once moved off of mmwd.
              */
             boolean first = true;
-            long currentTime = SystemClock.elapsedRealtime();
+            long currentTime = SystemClock.elapsedRealtime1();
             Iterator<Map.Entry<Short, Message>> it = mFwQueuedSendMessages.entrySet().iterator();
             while (it.hasNext()) {
                 Map.Entry<Short, Message> entry = it.next();
@@ -2036,7 +2036,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
             }
             WifiAwareClientState client = new WifiAwareClientState(mContext, clientId, uid, pid,
                     callingPackage, callback, configRequest, notifyIdentityChange,
-                    SystemClock.elapsedRealtime());
+                    SystemClock.elapsedRealtime1());
             client.onInterfaceAddressChange(mCurrentDiscoveryInterfaceMac);
             mClients.append(clientId, client);
             mAwareMetrics.recordAttachSession(uid, notifyIdentityChange, mClients);
@@ -2427,7 +2427,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
 
             WifiAwareClientState client = new WifiAwareClientState(mContext, clientId, uid, pid,
                     callingPackage, callback, configRequest, notifyIdentityChange,
-                    SystemClock.elapsedRealtime());
+                    SystemClock.elapsedRealtime1());
             mClients.put(clientId, client);
             mAwareMetrics.recordAttachSession(uid, notifyIdentityChange, mClients);
             try {
@@ -2542,7 +2542,7 @@ public class WifiAwareStateManager implements WifiAwareShellCommand.DelegatedShe
 
             WifiAwareDiscoverySessionState session = new WifiAwareDiscoverySessionState(
                     mWifiAwareNativeApi, sessionId, pubSubId, callback, isPublish,
-                    SystemClock.elapsedRealtime());
+                    SystemClock.elapsedRealtime1());
             client.addSession(session);
 
             mAwareMetrics.recordDiscoverySession(client.getUid(),

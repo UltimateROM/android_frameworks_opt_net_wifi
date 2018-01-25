@@ -69,7 +69,7 @@ public class WifiNetworkSelectorTest {
                 mLocalLog);
         mWifiNetworkSelector.registerNetworkEvaluator(mDummyEvaluator, 1);
         mDummyEvaluator.setEvaluatorToSelectCandidate(true);
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime());
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1());
 
     }
 
@@ -274,7 +274,7 @@ public class WifiNetworkSelectorTest {
         WifiConfiguration candidate = mWifiNetworkSelector.selectNetwork(scanDetails,
                 blacklist, mWifiInfo, false, true, false);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS - 2000);
 
         // Do another network selection with WSM in CONNECTED state.
@@ -315,7 +315,7 @@ public class WifiNetworkSelectorTest {
                 blacklist, mWifiInfo, false, true, false);
         WifiConfigurationTestUtil.assertConfigurationEqual(savedConfigs[0], candidate);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS - 2000);
 
         // Do another network selection with WSM in DISCONNECTED state.
@@ -361,7 +361,7 @@ public class WifiNetworkSelectorTest {
         when(mWifiInfo.is24GHz()).thenReturn(false);
         when(mWifiInfo.is5GHz()).thenReturn(true);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS + 2000);
 
         // Do another network selection.
@@ -408,7 +408,7 @@ public class WifiNetworkSelectorTest {
         when(mWifiInfo.is5GHz()).thenReturn(true);
         when(mWifiInfo.getRssi()).thenReturn(levels[0]);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS + 2000);
 
         // Do another network selection.
@@ -483,7 +483,7 @@ public class WifiNetworkSelectorTest {
         when(mWifiInfo.is24GHz()).thenReturn(true);
         when(mWifiInfo.is5GHz()).thenReturn(false);
         when(mWifiInfo.getRssi()).thenReturn(levels[0]);
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS + 2000);
 
         // Prepare the second scan results which have no test1.
@@ -588,7 +588,7 @@ public class WifiNetworkSelectorTest {
 
         WifiConfigurationTestUtil.assertConfigurationEqual(networkSelectorChoice, candidate);
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS + 2000);
 
         assertTrue(mWifiNetworkSelector.setUserConnectChoice(userChoice.networkId));
@@ -914,7 +914,7 @@ public class WifiNetworkSelectorTest {
         when(mWifiInfo.is24GHz()).thenReturn(!ScanResult.is5GHz(freqs[0]));
         when(mWifiInfo.is5GHz()).thenReturn(ScanResult.is5GHz(freqs[0]));
 
-        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime()
+        when(mClock.getElapsedSinceBootMillis()).thenReturn(SystemClock.elapsedRealtime1()
                 + WifiNetworkSelector.MINIMUM_NETWORK_SELECTION_INTERVAL_MS + 2000);
 
         candidate = mWifiNetworkSelector.selectNetwork(scanDetails, blacklist, mWifiInfo,
